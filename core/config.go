@@ -83,6 +83,7 @@ type Config struct {
 	TLSInsecureSkipVerify bool
 	Forcev6               bool
 	daemonMode            bool
+	noUpdate              bool
 	mtx                   sync.RWMutex
 	fileMtx               sync.Mutex
 	sdwanMtx              sync.Mutex
@@ -429,6 +430,8 @@ func parseParams(subCommand string, cmd string) {
 	maxLogSize := fset.Int("maxlogsize", 1024*1024, "default 1MB")
 	iface := fset.String("interface", "", "bind underlay sockets to this network interface, \"auto\" to auto-detect")
 	dns := fset.String("dns", "", "comma separated DNS servers used when an interface is bound")
+	fset.String("workdir", "", "writable directory for config.json and logs (default: binary directory)")
+	noUpdate := fset.Bool("noupdate", false, "ignore server-pushed updates")
 	if cmd == "" {
 		if subCommand == "" { // no subcommand
 			fset.Parse(os.Args[1:])
@@ -472,6 +475,7 @@ func parseParams(subCommand string, cmd string) {
 	}
 	// gConf.mtx.Lock() // when calling this func it's single-thread no lock
 	gConf.daemonMode = *daemonMode
+	gConf.noUpdate = *noUpdate || os.Getenv("OPENP2P_NOUPDATE") != ""
 	// spec paramters in commandline will always be used
 	splitList := func(s string) []string {
 		var list []string

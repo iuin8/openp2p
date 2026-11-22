@@ -21,6 +21,8 @@ Or
 >* -interface: Bind underlay sockets (TCP/UDP/QUIC, DNS, NAT detect) to this network interface, e.g. `en0`. Use `auto` to pick the interface of the default route. When set, UPnP/NAT-PMP, SDWAN and IPv6 refresh are skipped to avoid conflicts with a system TUN. Environment: `OPENP2P_IFACE`
 >* -dns: Comma separated DNS servers used while an interface is bound, e.g. `119.29.29.29:53,223.5.5.5:53` (that is also the default). Environment: `OPENP2P_DNS`
 >* `-interface`/`-dns` precedence: flag > environment > `config.json` (`network.Interface` / `network.DNS`)
+>* -workdir: writable directory for config.json and logs (default: the binary directory). Env: OPENP2P_WORKDIR. Use it when the binary lives in a read-only location (app bundle, container image, sidecar resource).
+>* -noupdate: ignore server-pushed binary updates. Env: OPENP2P_NOUPDATE. Use it when the host application owns the binary and updates it out-of-band.
 
 ### Run in Docker container
 We don't provide official docker image yet, you can run it in any container
